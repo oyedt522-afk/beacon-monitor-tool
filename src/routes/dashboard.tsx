@@ -29,6 +29,7 @@ import {
   fmtDate,
   inspectionsQuery,
 } from "@/lib/nirikshan";
+import { useStaff } from "@/lib/staff-store";
 
 export const Route = createFileRoute("/dashboard")({
   head: () => ({
@@ -59,6 +60,7 @@ function DashboardPage() {
   const attendance = useQuery(attendanceQuery());
   const inspections = useQuery(inspectionsQuery);
   const employees = useQuery(employeesQuery);
+  const localStaff = useStaff();
 
   const rows = attendance.data ?? [];
   const insp = inspections.data ?? [];
