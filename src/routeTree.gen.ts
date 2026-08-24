@@ -10,12 +10,27 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ActivitiesRouteImport } from './routes/activities'
+import { Route as AttendanceRouteImport } from './routes/attendance'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as InspectionsRouteImport } from './routes/inspections'
+import { Route as InspectionsIndexRouteImport } from './routes/inspections.index'
+import { Route as InspectionsIdRouteImport } from './routes/inspections.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ActivitiesRoute = ActivitiesRouteImport.update({
+  id: '/activities',
+  path: '/activities',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AttendanceRoute = AttendanceRouteImport.update({
+  id: '/attendance',
+  path: '/attendance',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -28,35 +43,91 @@ const DashboardRoute = DashboardRouteImport.update({
   path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
+const InspectionsRoute = InspectionsRouteImport.update({
+  id: '/inspections',
+  path: '/inspections',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InspectionsIndexRoute = InspectionsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => InspectionsRoute,
+} as any)
+const InspectionsIdRoute = InspectionsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => InspectionsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/activities': typeof ActivitiesRoute
+  '/attendance': typeof AttendanceRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRoute
+  '/inspections': typeof InspectionsRouteWithChildren
+  '/inspections/$id': typeof InspectionsIdRoute
+  '/inspections/': typeof InspectionsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/activities': typeof ActivitiesRoute
+  '/attendance': typeof AttendanceRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRoute
+  '/inspections/$id': typeof InspectionsIdRoute
+  '/inspections': typeof InspectionsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/activities': typeof ActivitiesRoute
+  '/attendance': typeof AttendanceRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRoute
+  '/inspections': typeof InspectionsRouteWithChildren
+  '/inspections/$id': typeof InspectionsIdRoute
+  '/inspections/': typeof InspectionsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/auth' | '/dashboard'
+  fullPaths:
+    | '/'
+    | '/activities'
+    | '/attendance'
+    | '/auth'
+    | '/dashboard'
+    | '/inspections'
+    | '/inspections/$id'
+    | '/inspections/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/dashboard'
-  id: '__root__' | '/' | '/auth' | '/dashboard'
+  to:
+    | '/'
+    | '/activities'
+    | '/attendance'
+    | '/auth'
+    | '/dashboard'
+    | '/inspections/$id'
+    | '/inspections'
+  id:
+    | '__root__'
+    | '/'
+    | '/activities'
+    | '/attendance'
+    | '/auth'
+    | '/dashboard'
+    | '/inspections'
+    | '/inspections/$id'
+    | '/inspections/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ActivitiesRoute: typeof ActivitiesRoute
+  AttendanceRoute: typeof AttendanceRoute
   AuthRoute: typeof AuthRoute
   DashboardRoute: typeof DashboardRoute
+  InspectionsRoute: typeof InspectionsRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -66,6 +137,20 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/activities': {
+      id: '/activities'
+      path: '/activities'
+      fullPath: '/activities'
+      preLoaderRoute: typeof ActivitiesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/attendance': {
+      id: '/attendance'
+      path: '/attendance'
+      fullPath: '/attendance'
+      preLoaderRoute: typeof AttendanceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -82,13 +167,51 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/inspections': {
+      id: '/inspections'
+      path: '/inspections'
+      fullPath: '/inspections'
+      preLoaderRoute: typeof InspectionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/inspections/': {
+      id: '/inspections/'
+      path: '/'
+      fullPath: '/inspections/'
+      preLoaderRoute: typeof InspectionsIndexRouteImport
+      parentRoute: typeof InspectionsRoute
+    }
+    '/inspections/$id': {
+      id: '/inspections/$id'
+      path: '/$id'
+      fullPath: '/inspections/$id'
+      preLoaderRoute: typeof InspectionsIdRouteImport
+      parentRoute: typeof InspectionsRoute
+    }
   }
 }
 
+interface InspectionsRouteChildren {
+  InspectionsIdRoute: typeof InspectionsIdRoute
+  InspectionsIndexRoute: typeof InspectionsIndexRoute
+}
+
+const InspectionsRouteChildren: InspectionsRouteChildren = {
+  InspectionsIdRoute: InspectionsIdRoute,
+  InspectionsIndexRoute: InspectionsIndexRoute,
+}
+
+const InspectionsRouteWithChildren = InspectionsRoute._addFileChildren(
+  InspectionsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ActivitiesRoute: ActivitiesRoute,
+  AttendanceRoute: AttendanceRoute,
   AuthRoute: AuthRoute,
   DashboardRoute: DashboardRoute,
+  InspectionsRoute: InspectionsRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

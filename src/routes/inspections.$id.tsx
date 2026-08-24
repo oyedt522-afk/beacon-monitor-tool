@@ -44,7 +44,7 @@ function InspectionDetail() {
   return (
     <AppShell
       title={inspection?.activities?.name ?? "Inspection"}
-      description={inspection?.activities?.location}
+      description={inspection?.activities?.location ?? undefined}
       actions={
         <Button asChild variant="outline" size="sm">
           <Link to="/inspections">
