@@ -268,6 +268,7 @@ export type Database = {
           is_active: boolean
           phone: string | null
           posting_location: string
+          user_id: string | null
         }
         Insert: {
           created_at?: string
@@ -281,6 +282,7 @@ export type Database = {
           is_active?: boolean
           phone?: string | null
           posting_location: string
+          user_id?: string | null
         }
         Update: {
           created_at?: string
@@ -294,6 +296,7 @@ export type Database = {
           is_active?: boolean
           phone?: string | null
           posting_location?: string
+          user_id?: string | null
         }
         Relationships: []
       }
@@ -416,6 +419,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      can_operate: { Args: { _user_id: string }; Returns: boolean }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -423,6 +427,9 @@ export type Database = {
         }
         Returns: boolean
       }
+      owns_attendance: { Args: { _attendance_id: string }; Returns: boolean }
+      owns_employee: { Args: { _employee_id: string }; Returns: boolean }
+      owns_inspection: { Args: { _inspection_id: string }; Returns: boolean }
     }
     Enums: {
       app_role: "admin" | "officer" | "staff"
