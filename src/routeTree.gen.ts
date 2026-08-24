@@ -15,6 +15,7 @@ import { Route as AttendanceRouteImport } from './routes/attendance'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as InspectionsRouteImport } from './routes/inspections'
+import { Route as StaffRouteImport } from './routes/staff'
 import { Route as InspectionsIndexRouteImport } from './routes/inspections.index'
 import { Route as InspectionsIdRouteImport } from './routes/inspections.$id'
 
@@ -48,6 +49,11 @@ const InspectionsRoute = InspectionsRouteImport.update({
   path: '/inspections',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StaffRoute = StaffRouteImport.update({
+  id: '/staff',
+  path: '/staff',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const InspectionsIndexRoute = InspectionsIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -66,6 +72,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRoute
   '/inspections': typeof InspectionsRouteWithChildren
+  '/staff': typeof StaffRoute
   '/inspections/$id': typeof InspectionsIdRoute
   '/inspections/': typeof InspectionsIndexRoute
 }
@@ -75,6 +82,7 @@ export interface FileRoutesByTo {
   '/attendance': typeof AttendanceRoute
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRoute
+  '/staff': typeof StaffRoute
   '/inspections/$id': typeof InspectionsIdRoute
   '/inspections': typeof InspectionsIndexRoute
 }
@@ -86,6 +94,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/dashboard': typeof DashboardRoute
   '/inspections': typeof InspectionsRouteWithChildren
+  '/staff': typeof StaffRoute
   '/inspections/$id': typeof InspectionsIdRoute
   '/inspections/': typeof InspectionsIndexRoute
 }
@@ -98,6 +107,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/dashboard'
     | '/inspections'
+    | '/staff'
     | '/inspections/$id'
     | '/inspections/'
   fileRoutesByTo: FileRoutesByTo
@@ -107,6 +117,7 @@ export interface FileRouteTypes {
     | '/attendance'
     | '/auth'
     | '/dashboard'
+    | '/staff'
     | '/inspections/$id'
     | '/inspections'
   id:
@@ -117,6 +128,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/dashboard'
     | '/inspections'
+    | '/staff'
     | '/inspections/$id'
     | '/inspections/'
   fileRoutesById: FileRoutesById
@@ -128,6 +140,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   DashboardRoute: typeof DashboardRoute
   InspectionsRoute: typeof InspectionsRouteWithChildren
+  StaffRoute: typeof StaffRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -174,6 +187,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InspectionsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/staff': {
+      id: '/staff'
+      path: '/staff'
+      fullPath: '/staff'
+      preLoaderRoute: typeof StaffRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/inspections/': {
       id: '/inspections/'
       path: '/'
@@ -212,6 +232,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   DashboardRoute: DashboardRoute,
   InspectionsRoute: InspectionsRouteWithChildren,
+  StaffRoute: StaffRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
