@@ -107,6 +107,11 @@ function AttendancePage() {
 
   const checkIn = useMutation({
     mutationFn: async () => {
+      if (localSelected) {
+        throw new Error(
+          `${localSelected.fullName} is on the local roster only — GPS check-in needs a synced duty point`,
+        );
+      }
       if (!employee) throw new Error("Select a staff member first");
       if (!gps) throw new Error("Capture GPS location before check-in");
       if (!face) throw new Error("Complete face verification before check-in");
