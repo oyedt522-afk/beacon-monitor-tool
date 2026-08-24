@@ -8,6 +8,7 @@ import {
   Menu,
   ShieldCheck,
   UserCheck,
+  Users,
 } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { motion } from "motion/react";
