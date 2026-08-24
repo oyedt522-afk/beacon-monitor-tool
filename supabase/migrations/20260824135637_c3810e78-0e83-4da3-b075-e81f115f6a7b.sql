@@ -1,0 +1,12 @@
+REVOKE EXECUTE ON FUNCTION public.handle_new_user() FROM PUBLIC;
+REVOKE EXECUTE ON FUNCTION public.has_role(uuid, app_role) FROM PUBLIC;
+REVOKE EXECUTE ON FUNCTION public.can_operate(uuid) FROM PUBLIC;
+REVOKE EXECUTE ON FUNCTION public.owns_employee(uuid) FROM PUBLIC;
+REVOKE EXECUTE ON FUNCTION public.owns_attendance(uuid) FROM PUBLIC;
+REVOKE EXECUTE ON FUNCTION public.owns_inspection(uuid) FROM PUBLIC;
+REVOKE EXECUTE ON FUNCTION public.handle_new_user() FROM anon, authenticated;
+REVOKE EXECUTE ON FUNCTION public.has_role(uuid, app_role) FROM anon, authenticated;
+REVOKE EXECUTE ON FUNCTION public.can_operate(uuid) FROM anon, authenticated;
+REVOKE EXECUTE ON FUNCTION public.owns_employee(uuid) FROM anon, authenticated;
+REVOKE EXECUTE ON FUNCTION public.owns_attendance(uuid) FROM anon, authenticated;
+REVOKE EXECUTE ON FUNCTION public.owns_inspection(uuid) FROM anon, authenticated;
