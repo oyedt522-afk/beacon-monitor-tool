@@ -29,6 +29,7 @@ import {
   fmtDate,
   inspectionsQuery,
 } from "@/lib/nirikshan";
+import { useStaff } from "@/lib/staff-store";
 
 export const Route = createFileRoute("/dashboard")({
   head: () => ({
@@ -59,6 +60,7 @@ function DashboardPage() {
   const attendance = useQuery(attendanceQuery());
   const inspections = useQuery(inspectionsQuery);
   const employees = useQuery(employeesQuery);
+  const localStaff = useStaff();
 
   const rows = attendance.data ?? [];
   const insp = inspections.data ?? [];
@@ -120,7 +122,10 @@ function DashboardPage() {
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <StatCard
           label="Active staff"
-          value={employees.data?.filter((e) => e.is_active).length ?? 0}
+          value={
+            (employees.data?.filter((e) => e.is_active).length ?? 0) +
+            localStaff.filter((s) => s.status === "active").length
+          }
           icon={UserCheck}
           hint="On roster"
           index={0}

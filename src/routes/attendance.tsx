@@ -42,6 +42,7 @@ import {
   todayISO,
   verificationsQuery,
 } from "@/lib/nirikshan";
+import { useStaff } from "@/lib/staff-store";
 
 export const Route = createFileRoute("/attendance")({
   head: () => ({
@@ -64,6 +65,7 @@ export const Route = createFileRoute("/attendance")({
 
 function AttendancePage() {
   const qc = useQueryClient();
+  const localStaff = useStaff();
   const employees = useQuery(employeesQuery);
   const attendance = useQuery(attendanceQuery());
   const verifications = useQuery(verificationsQuery);
@@ -73,6 +75,9 @@ function AttendancePage() {
   const [gps, setGps] = useState<{ lat: number; lng: number } | null>(null);
 
   const employee = employees.data?.find((e) => e.id === employeeId) ?? null;
+  const localSelected = employeeId.startsWith("local:")
+    ? (localStaff.find((s) => `local:${s.id}` === employeeId) ?? null)
+    : null;
   const rows = attendance.data ?? [];
   const todays = rows.filter((r) => r.work_date === todayISO());
   const myToday = todays.find((r) => r.employee_id === employeeId) ?? null;
@@ -102,6 +107,11 @@ function AttendancePage() {
 
   const checkIn = useMutation({
     mutationFn: async () => {
+      if (localSelected) {
+        throw new Error(
+          `${localSelected.fullName} is on the local roster only — GPS check-in needs a synced duty point`,
+        );
+      }
       if (!employee) throw new Error("Select a staff member first");
       if (!gps) throw new Error("Capture GPS location before check-in");
       if (!face) throw new Error("Complete face verification before check-in");
@@ -241,6 +251,13 @@ function AttendancePage() {
                   {e.full_name} · {e.employee_code}
                 </SelectItem>
               ))}
+              {localStaff
+                .filter((s) => s.status === "active")
+                .map((s) => (
+                  <SelectItem key={s.id} value={`local:${s.id}`}>
+                    {s.fullName} · {s.staffId}
+                  </SelectItem>
+                ))}
             </SelectContent>
           </Select>
 
